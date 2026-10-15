@@ -2,14 +2,19 @@ import express, { type Express, type Request, type Response } from 'express';
 
 const app: Express = express();
 
-const port = Number(process.env.PORT || 3000);
+const PORT = Number(process.env.PORT ?? 3000);
+
 app.get('/healthz', (req: Request, res: Response) => {
   res.status(200).json({ ok: true });
 });
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+
+const server = app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
-app.listen(, () => {
-  console.log('Server running on http://localhost:3000');
+process.on('SIGTERM', () => {
+  server.close(() => {
+    console.log('Server closed gracefully');
+    process.exit(0);
+  });
 });
