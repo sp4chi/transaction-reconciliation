@@ -12,10 +12,6 @@ app.get('/healthz', (req: Request, res: Response) => {
   res.status(200).json({ ok: true });
 });
 
-app.post('/boom', validate(z.object({ name: z.string() })), (req, res) => {
-  res.json({ got: req.body });
-});
-
 app.use((_req, _res) => {
   throw new AppError(404, 'Not Found');
 });
